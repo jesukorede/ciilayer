@@ -74,7 +74,7 @@ export default function ProfilePage() {
           <p style={{ color: "var(--muted)" }}>Connect wallet to edit your profile.</p>
         ) : (
           <div className="row">
-            <div className="panel" style={{ flex: 1, minWidth: 320 }}>
+            <div className="panel" style={{ flex: "1 1 360px", minWidth: 0 }}>
               <label>Role</label>
               <select className="input" value={role} onChange={(e) => setRole(e.target.value)}>
                 <option value="human">human</option>
@@ -88,7 +88,7 @@ export default function ProfilePage() {
                 Save
               </button>
             </div>
-            <div className="panel" style={{ flex: 1, minWidth: 320 }}>
+            <div className="panel" style={{ flex: "1 1 360px", minWidth: 0 }}>
               <h3 style={{ marginTop: 0 }}>Add machine</h3>
               <input className="input" value={machineName} onChange={(e) => setMachineName(e.target.value)} placeholder="Name" />
               <div style={{ height: 10 }} />

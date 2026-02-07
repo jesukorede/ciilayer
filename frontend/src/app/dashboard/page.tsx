@@ -31,7 +31,7 @@ export default function DashboardPage() {
           <p style={{ color: "var(--muted)" }}>Connect wallet to view your dashboard.</p>
         ) : (
           <div className="row">
-            <div className="panel" style={{ flex: 1, minWidth: 280 }}>
+            <div className="panel" style={{ flex: "1 1 320px", minWidth: 0 }}>
               <h3 style={{ marginTop: 0 }}>You</h3>
               <div className="badge">{me.role}</div>
               <div style={{ height: 8 }} />
@@ -44,7 +44,7 @@ export default function DashboardPage() {
                 <strong>Machines:</strong> {me.machines?.length ? me.machines.length : 0}
               </p>
             </div>
-            <div className="panel" style={{ flex: 2, minWidth: 320 }}>
+            <div className="panel" style={{ flex: "2 1 420px", minWidth: 0 }}>
               <h3 style={{ marginTop: 0 }}>Jobs</h3>
               <p style={{ color: "var(--muted)" }}>Use the Jobs page to create/accept/complete.</p>
               <div>

@@ -86,7 +86,7 @@ export default function JobsPage() {
         <h2 style={{ marginTop: 0 }}>Jobs</h2>
         {error ? <p style={{ color: "tomato" }}>{error}</p> : null}
         <div className="row">
-          <div className="panel" style={{ flex: 1, minWidth: 320 }}>
+          <div className="panel" style={{ flex: "1 1 360px", minWidth: 0 }}>
             <h3 style={{ marginTop: 0 }}>Create job</h3>
             {me && me.pilotStatus !== "approved" ? (
               <div className="panel" style={{ boxShadow: "none", marginBottom: 12 }}>
@@ -119,7 +119,7 @@ export default function JobsPage() {
               Note: you must be connected to create jobs.
             </p>
           </div>
-          <div className="panel" style={{ flex: 2, minWidth: 340 }}>
+          <div className="panel" style={{ flex: "2 1 420px", minWidth: 0 }}>
             <h3 style={{ marginTop: 0 }}>Open jobs</h3>
             {jobs.map((j) => (
               <div key={j.id} className="panel" style={{ marginBottom: 10 }}>
