@@ -4,13 +4,26 @@ import { z } from "zod";
 import type { Db } from "../config/database.js";
 import { requireAuth, type AuthedRequest } from "../middleware/auth.middleware.js";
 import { requirePilotApproved } from "../middleware/pilot.middleware.js";
+import { trackEvent } from "../services/analytics.service.js";
 import { acceptJob, completeJob, createJob, listJobs } from "../services/job.service.js";
 
 export function jobRoutes(db: Db) {
   const r = Router();
 
-  r.get("/", async (_req, res) => {
+  r.get("/", async (req, res) => {
     const jobs = await listJobs(db);
+
+    void trackEvent({
+      name: "jobs_listed",
+      req: {
+        ip: req.ip,
+        userAgent: req.get("user-agent") ?? undefined,
+        origin: req.get("origin") ?? undefined,
+        referer: req.get("referer") ?? undefined
+      },
+      meta: { jobsCount: jobs.length }
+    });
+
     res.json({ jobs });
   });
 
@@ -32,6 +45,19 @@ export function jobRoutes(db: Db) {
       createdBy: req.user!.walletAddress
     });
 
+    void trackEvent({
+      name: "job_created",
+      walletAddress: req.user!.walletAddress,
+      jobId: job.id,
+      meta: { title: job.title, requiredSkillsCount: job.requiredSkills.length },
+      req: {
+        ip: req.ip,
+        userAgent: req.get("user-agent") ?? undefined,
+        origin: req.get("origin") ?? undefined,
+        referer: req.get("referer") ?? undefined
+      }
+    });
+
     res.json({ job });
   });
 
@@ -42,6 +68,19 @@ export function jobRoutes(db: Db) {
         res.status(404).json({ error: "not_found" });
         return;
       }
+
+      void trackEvent({
+        name: "job_accepted",
+        walletAddress: req.user!.walletAddress,
+        jobId: job.id,
+        req: {
+          ip: req.ip,
+          userAgent: req.get("user-agent") ?? undefined,
+          origin: req.get("origin") ?? undefined,
+          referer: req.get("referer") ?? undefined
+        }
+      });
+
       res.json({ job });
     } catch (e: any) {
       res.status(400).json({ error: String(e?.message ?? e) });
@@ -55,6 +94,19 @@ export function jobRoutes(db: Db) {
         res.status(404).json({ error: "not_found" });
         return;
       }
+
+      void trackEvent({
+        name: "job_completed",
+        walletAddress: req.user!.walletAddress,
+        jobId: job.id,
+        req: {
+          ip: req.ip,
+          userAgent: req.get("user-agent") ?? undefined,
+          origin: req.get("origin") ?? undefined,
+          referer: req.get("referer") ?? undefined
+        }
+      });
+
       res.json({ job });
     } catch (e: any) {
       res.status(400).json({ error: String(e?.message ?? e) });
