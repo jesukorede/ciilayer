@@ -15,7 +15,7 @@ export function Navbar() {
           alt="CiiLayer"
           width={28}
           height={28}
-          style={{ display: "block", background: "var(--brand)", borderRadius: 8, padding: 4 }}
+          style={{ display: "block", background: "var(--color-brand)", borderRadius: 8, padding: 4 }}
         />
         <strong>CiiLayer</strong>
       </div>
