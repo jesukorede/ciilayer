@@ -12,12 +12,12 @@ export function Navbar() {
       <div className="row" style={{ alignItems: "center", gap: 10 }}>
         <img
           src="/logo.svg"
-          alt="OperantX"
+          alt="CiiLayer"
           width={28}
           height={28}
           style={{ display: "block", background: "var(--brand)", borderRadius: 8, padding: 4 }}
         />
-        <strong>OperantX</strong>
+        <strong>CiiLayer</strong>
       </div>
       <div className="row nav-links" style={{ alignItems: "center" }}>
         <Link className={path === "/" ? "active" : ""} href="/">

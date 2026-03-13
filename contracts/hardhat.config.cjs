@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-ethers");
 require("dotenv").config();
 
-const PEAQ_RPC_URL = process.env.PEAQ_RPC_URL || "";
+const HEDERA_RPC_URL = process.env.HEDERA_RPC_URL || process.env.RPC_URL || "";
 const PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || "";
 const CHAIN_ID = Number(process.env.CHAIN_ID || 0);
 
@@ -9,9 +9,9 @@ const CHAIN_ID = Number(process.env.CHAIN_ID || 0);
 module.exports = {
   solidity: "0.8.24",
   networks: {
-    peaq: {
-      url: PEAQ_RPC_URL,
-      chainId: CHAIN_ID || undefined,
+    hederaTestnet: {
+      url: HEDERA_RPC_URL,
+      chainId: CHAIN_ID || 296,
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
     },
   },

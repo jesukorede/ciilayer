@@ -8,7 +8,7 @@ async function main() {
 
   app.listen(env.port, () => {
     // eslint-disable-next-line no-console
-    console.log(`OperantX backend listening on http://localhost:${env.port}`);
+    console.log(`CiiLayer backend listening on http://localhost:${env.port}`);
   });
 }
 

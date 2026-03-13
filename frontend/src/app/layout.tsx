@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "OperantX MVP",
-  description: "Decentralized human + machine coordination on peaq"
+  title: "CiiLayer MVP",
+  description: "Decentralized human + machine coordination on Hedera"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

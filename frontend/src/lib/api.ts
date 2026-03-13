@@ -2,13 +2,17 @@ const BASE = (process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:4000").re
 
 export function getToken() {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("operantx_token");
+  return localStorage.getItem("ciilayer_token") ?? localStorage.getItem("operantx_token");
 }
 
 export function setToken(token: string | null) {
   if (typeof window === "undefined") return;
-  if (!token) localStorage.removeItem("operantx_token");
-  else localStorage.setItem("operantx_token", token);
+  if (!token) {
+    localStorage.removeItem("ciilayer_token");
+    localStorage.removeItem("operantx_token");
+  } else {
+    localStorage.setItem("ciilayer_token", token);
+  }
 }
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {

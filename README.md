@@ -1,6 +1,6 @@
-# OperantX (MVP)
+# CiiLayer (MVP)
 
-OperantX is a decentralized coordination platform on peaq that enables humans and machines to offer services, get matched to jobs, and build verifiable work histories on-chain.
+CiiLayer is a decentralized coordination platform on Hedera that enables humans and machines to offer services, get matched to jobs, and build verifiable work histories on-chain.
 
 ## MVP Scope
 

@@ -7,7 +7,7 @@ async function main() {
 
   const addr = await registry.getAddress();
   // eslint-disable-next-line no-console
-  console.log("OperantXRegistry deployed to:", addr);
+  console.log("CiiLayerRegistry deployed to:", addr);
 }
 
 main().catch((e) => {

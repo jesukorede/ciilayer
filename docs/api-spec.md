@@ -1,4 +1,4 @@
-# OperantX MVP API Spec
+# CiiLayer MVP API Spec
 
 Base URL: `http://localhost:4000`
 

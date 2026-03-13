@@ -90,7 +90,7 @@ export default function JobsPage() {
             <h3 style={{ marginTop: 0 }}>Create job</h3>
             {me && me.pilotStatus !== "approved" ? (
               <div className="panel" style={{ boxShadow: "none", marginBottom: 12 }}>
-                <div className="badge">Pilot access</div>
+                <div className="badge badge-pending">Pilot access</div>
                 <p style={{ margin: "8px 0", color: "var(--muted)" }}>
                   Job creation is currently limited to approved pilot users.
                 </p>
@@ -122,10 +122,22 @@ export default function JobsPage() {
           <div className="panel" style={{ flex: "2 1 420px", minWidth: 0 }}>
             <h3 style={{ marginTop: 0 }}>Open jobs</h3>
             {jobs.map((j) => (
-              <div key={j.id} className="panel" style={{ marginBottom: 10 }}>
+              <div key={j.id} className="card-job" style={{ marginBottom: 10 }}>
                 <div className="row" style={{ justifyContent: "space-between" }}>
                   <strong>{j.title}</strong>
-                  <span className="badge">{j.status}</span>
+                  <span
+                    className={`badge ${
+                      j.status === "open"
+                        ? "badge-available"
+                        : j.status === "accepted"
+                          ? "badge-active"
+                          : j.status === "completed"
+                            ? "badge-complete"
+                            : "badge-inactive"
+                    }`}
+                  >
+                    {j.status}
+                  </span>
                 </div>
                 <div style={{ color: "var(--muted)", marginTop: 6 }}>{j.description}</div>
                 <div style={{ marginTop: 8, color: "var(--muted)" }}>

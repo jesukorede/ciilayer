@@ -9,6 +9,29 @@ let activeProvider: Eip1193Provider | null = null;
 
 export type WalletProviderKind = "injected" | "walletconnect";
 
+function getChainConfig() {
+  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? 296);
+  const rpcUrl =
+    process.env.NEXT_PUBLIC_RPC_URL ??
+    process.env.NEXT_PUBLIC_HEDERA_RPC_URL ??
+    "https://testnet.hashio.io/api";
+
+  return {
+    chainId,
+    rpcUrl,
+    chainIdHex: `0x${chainId.toString(16)}` as const,
+    chainName: process.env.NEXT_PUBLIC_CHAIN_NAME ?? "Hedera Testnet",
+    nativeCurrency: {
+      name: process.env.NEXT_PUBLIC_NATIVE_CURRENCY_NAME ?? "HBAR",
+      symbol: process.env.NEXT_PUBLIC_NATIVE_CURRENCY_SYMBOL ?? "HBAR",
+      decimals: Number(process.env.NEXT_PUBLIC_NATIVE_CURRENCY_DECIMALS ?? 18)
+    },
+    blockExplorerUrls: process.env.NEXT_PUBLIC_BLOCK_EXPLORER_URL
+      ? [process.env.NEXT_PUBLIC_BLOCK_EXPLORER_URL]
+      : ["https://hashscan.io/testnet"]
+  };
+}
+
 async function getInjectedProvider(): Promise<Eip1193Provider | null> {
   if (typeof window === "undefined") return null;
   const anyWin = window as any;
@@ -27,8 +50,7 @@ async function getWalletConnectProvider(): Promise<Eip1193Provider | null> {
   const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
   if (!projectId) return null;
 
-  const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? 9990);
-  const rpcUrl = process.env.NEXT_PUBLIC_PEAQ_RPC_URL ?? "https://peaq-agung.api.onfinality.io/public";
+  const { chainId, rpcUrl } = getChainConfig();
 
   const provider = await EthereumProvider.init({
     projectId,
@@ -68,6 +90,42 @@ export async function getWalletClient(preferred?: WalletProviderKind) {
 
 async function connectWithProvider(provider: any): Promise<`0x${string}`> {
   if (!provider) throw new Error("no_wallet");
+
+  const cfg = getChainConfig();
+
+  // Best-effort: ensure injected wallets are on the configured chain.
+  // WalletConnect is already initialized with the target chain.
+  try {
+    if (provider?.request) {
+      const current = await provider.request({ method: "eth_chainId" }).catch(() => null);
+      if (current && String(current).toLowerCase() !== cfg.chainIdHex.toLowerCase()) {
+        try {
+          await provider.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: cfg.chainIdHex }]
+          });
+        } catch (e: any) {
+          const code = e?.code;
+          if (code === 4902) {
+            await provider.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: cfg.chainIdHex,
+                  chainName: cfg.chainName,
+                  nativeCurrency: cfg.nativeCurrency,
+                  rpcUrls: [cfg.rpcUrl],
+                  blockExplorerUrls: cfg.blockExplorerUrls
+                }
+              ]
+            });
+          }
+        }
+      }
+    }
+  } catch {
+    // ignore chain switching errors; user may still connect on a different chain
+  }
 
   try {
     if (typeof provider.connect === "function") {

@@ -31,11 +31,21 @@ export default function DashboardPage() {
           <p style={{ color: "var(--muted)" }}>Connect wallet to view your dashboard.</p>
         ) : (
           <div className="row">
-            <div className="panel" style={{ flex: "1 1 320px", minWidth: 0 }}>
+            <div className="stat-card" style={{ flex: "1 1 320px", minWidth: 0 }}>
               <h3 style={{ marginTop: 0 }}>You</h3>
-              <div className="badge">{me.role}</div>
+              <div className="badge badge-active">{me.role}</div>
               <div style={{ height: 8 }} />
-              <div className="badge">pilot: {me.pilotStatus ?? "none"}</div>
+              <div
+                className={`badge ${
+                  me.pilotStatus === "approved"
+                    ? "badge-complete"
+                    : me.pilotStatus === "applied"
+                      ? "badge-pending"
+                      : "badge-inactive"
+                }`}
+              >
+                pilot: {me.pilotStatus ?? "none"}
+              </div>
               <p style={{ color: "var(--muted)" }}>{me.walletAddress}</p>
               <p>
                 <strong>Skills:</strong> {me.skills?.length ? me.skills.join(", ") : "(none)"}
@@ -49,10 +59,22 @@ export default function DashboardPage() {
               <p style={{ color: "var(--muted)" }}>Use the Jobs page to create/accept/complete.</p>
               <div>
                 {jobs.slice(0, 5).map((j) => (
-                  <div key={j.id} className="panel" style={{ marginBottom: 10 }}>
+                  <div key={j.id} className="card-job" style={{ marginBottom: 10 }}>
                     <div className="row" style={{ justifyContent: "space-between" }}>
                       <strong>{j.title}</strong>
-                      <span className="badge">{j.status}</span>
+                      <span
+                        className={`badge ${
+                          j.status === "open"
+                            ? "badge-available"
+                            : j.status === "accepted"
+                              ? "badge-active"
+                              : j.status === "completed"
+                                ? "badge-complete"
+                                : "badge-inactive"
+                        }`}
+                      >
+                        {j.status}
+                      </span>
                     </div>
                     <div style={{ color: "var(--muted)", marginTop: 6 }}>{j.description}</div>
                   </div>

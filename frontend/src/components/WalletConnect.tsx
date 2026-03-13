@@ -20,7 +20,7 @@ export function WalletConnect() {
   })();
 
   useEffect(() => {
-    const a = localStorage.getItem("operantx_address");
+    const a = localStorage.getItem("ciilayer_address") ?? localStorage.getItem("operantx_address");
     if (a) setAddress(a);
   }, []);
 
@@ -70,7 +70,7 @@ export function WalletConnect() {
       const { token } = await api.verify(addr, sig);
 
       setToken(token);
-      localStorage.setItem("operantx_address", addr);
+      localStorage.setItem("ciilayer_address", addr);
       setAddress(addr);
       setShowChooser(false);
     } catch (e: any) {
@@ -96,6 +96,7 @@ export function WalletConnect() {
 
   function onDisconnect() {
     setToken(null);
+    localStorage.removeItem("ciilayer_address");
     localStorage.removeItem("operantx_address");
     setAddress(null);
     disconnectWallet().catch(() => {});

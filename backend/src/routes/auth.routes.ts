@@ -48,7 +48,7 @@ export function authRoutes(db: Db) {
         nonce,
         domain: "localhost",
         uri: "http://localhost:3000",
-        chainId: Number(process.env.CHAIN_ID ?? 0)
+        chainId: Number(process.env.CHAIN_ID ?? 296)
       })
     });
   });

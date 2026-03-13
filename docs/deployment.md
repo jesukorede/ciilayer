@@ -1,9 +1,9 @@
 # Deployment (MVP)
 
-## peaq testnet
+## hedera testnet
 
 - Deploy contracts using `contracts/` Hardhat scripts.
-- Configure frontend/backend with `CHAIN_ID`, `PEAQ_RPC_URL`, and `REGISTRY_CONTRACT_ADDRESS`.
+- Configure frontend/backend with `CHAIN_ID`, `HEDERA_RPC_URL`, and `REGISTRY_CONTRACT_ADDRESS`.
 
 ## Notes
 

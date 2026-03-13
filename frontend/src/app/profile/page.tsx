@@ -75,13 +75,13 @@ export default function ProfilePage() {
         ) : (
           <div className="row">
             <div className="panel" style={{ flex: "1 1 360px", minWidth: 0 }}>
-              <label>Role</label>
+              <label className="input-label">Role</label>
               <select className="input" value={role} onChange={(e) => setRole(e.target.value)}>
                 <option value="human">human</option>
                 <option value="machine_owner">machine_owner</option>
               </select>
               <div style={{ height: 10 }} />
-              <label>Skills (comma-separated)</label>
+              <label className="input-label">Skills (comma-separated)</label>
               <input className="input" value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="programming, diagnostics" />
               <div style={{ height: 10 }} />
               <button className="btn" onClick={onSave}>
@@ -104,10 +104,14 @@ export default function ProfilePage() {
                 <strong>Machines:</strong>
                 <div style={{ marginTop: 8 }}>
                   {(me.machines ?? []).map((m: any, idx: number) => (
-                    <div key={idx} className="panel" style={{ marginBottom: 8 }}>
+                    <div key={idx} className="card-machine" style={{ marginBottom: 8 }}>
+                      <div className="type-indicator">
+                        <span className="type-dot" />
+                        <span className="type-label">Machine</span>
+                      </div>
                       <div className="row" style={{ justifyContent: "space-between" }}>
                         <strong>{m.name}</strong>
-                        <span className="badge">{m.type}</span>
+                        <span className="badge badge-active">{m.type}</span>
                       </div>
                       <div style={{ color: "var(--muted)", marginTop: 6 }}>{(m.capabilities ?? []).join(", ")}</div>
                     </div>

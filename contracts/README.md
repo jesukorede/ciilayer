@@ -1,4 +1,4 @@
-# OperantX Contracts (MVP)
+# CiiLayer Contracts (MVP)
 
 ## Contract
 
@@ -13,7 +13,7 @@
 
 Set env vars:
 
-- `PEAQ_RPC_URL`
+- `HEDERA_RPC_URL`
 - `CHAIN_ID`
 - `DEPLOYER_PRIVATE_KEY`
 
