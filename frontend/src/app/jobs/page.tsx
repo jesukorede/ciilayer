@@ -24,16 +24,6 @@ export default function JobsPage() {
     setJobs(jobs);
   }
 
-  async function onApplyPilot() {
-    setError(null);
-    try {
-      const { user } = await api.applyPilot();
-      setMe(user);
-    } catch (e: any) {
-      setError(e.message);
-    }
-  }
-
   useEffect(() => {
     (async () => {
       try {
@@ -88,19 +78,6 @@ export default function JobsPage() {
         <div className="row">
           <div className="panel" style={{ flex: "1 1 360px", minWidth: 0 }}>
             <h3 style={{ marginTop: 0 }}>Create job</h3>
-            {me && me.pilotStatus !== "approved" ? (
-              <div className="panel" style={{ boxShadow: "none", marginBottom: 12 }}>
-                <div className="badge badge-pending">Pilot access</div>
-                <p style={{ margin: "8px 0", color: "var(--muted)" }}>
-                  Job creation is currently limited to approved pilot users.
-                </p>
-                <div className="row">
-                  <button className="btn" onClick={onApplyPilot} disabled={me.pilotStatus === "applied"}>
-                    {me.pilotStatus === "applied" ? "Application sent" : "Apply to run a pilot"}
-                  </button>
-                </div>
-              </div>
-            ) : null}
             <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
             <div style={{ height: 10 }} />
             <textarea className="textarea" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
@@ -112,7 +89,7 @@ export default function JobsPage() {
               placeholder="Required skills (comma-separated)"
             />
             <div style={{ height: 10 }} />
-            <button className="btn" onClick={onCreate} disabled={me && me.pilotStatus !== "approved"}>
+            <button className="btn" onClick={onCreate}>
               Create
             </button>
             <p style={{ color: "var(--muted)" }}>

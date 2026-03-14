@@ -39,6 +39,32 @@ function getSupabaseClient(): SupabaseClient | null {
   return cached;
 }
 
+export function isAnalyticsEnabled(): boolean {
+  return Boolean(env.supabaseUrl && env.supabaseServiceRoleKey);
+}
+
+export async function getAnalyticsEvents(params: {
+  walletAddress?: string;
+  limit: number;
+}): Promise<any[]> {
+  const client = getSupabaseClient();
+  if (!client) return [];
+
+  let q = client
+    .from("analytics_events")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(params.limit);
+
+  if (params.walletAddress) {
+    q = q.eq("wallet_address", String(params.walletAddress).toLowerCase());
+  }
+
+  const { data, error } = await q;
+  if (error) return [];
+  return data ?? [];
+}
+
 export async function trackEvent(params: TrackEventParams): Promise<void> {
   const client = getSupabaseClient();
   if (!client) return;
