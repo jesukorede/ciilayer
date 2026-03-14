@@ -60,6 +60,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+main {
+  padding: var(--space-lg) var(--space-xl);
+}
+
 button { cursor: pointer; font-family: var(--font-body); }
 
 ::selection {
@@ -72,15 +76,39 @@ button { cursor: pointer; font-family: var(--font-body); }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-brand); }
 
-.container { max-width: 1280px; margin: 0 auto; padding: var(--space-lg) var(--space-xl); }
+.container { 
+  max-width: 1280px; 
+  margin: 0 auto; 
+  padding: var(--space-lg) var(--space-xl); 
+}
+
 .panel {
   background: var(--color-bg-surface);
   border: 0.5px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-md) var(--space-lg);
+  width: 100%;
 }
-.row { display: flex; gap: var(--space-md); flex-wrap: wrap; }
-.row > * { min-width: 0; }
+
+.row { 
+  display: flex; 
+  gap: var(--space-md); 
+  flex-wrap: wrap; 
+}
+
+.row > * { 
+  min-width: 0; 
+}
+
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: anywhere;
+}
+
 .btn {
   background: var(--color-brand);
   color: #FFFFFF;
@@ -336,6 +364,7 @@ button { cursor: pointer; font-family: var(--font-body); }
 .pulse { animation: pulse 2s ease-in-out infinite; }
 
 @media (max-width: 720px) {
+  main { padding: var(--space-lg) var(--space-md); }
   .container { padding: var(--space-lg) var(--space-md); }
   .nav { flex-wrap: wrap; gap: var(--space-sm); padding: var(--space-md) var(--space-md); }
   .nav a { margin-right: 0; }
@@ -345,6 +374,15 @@ button { cursor: pointer; font-family: var(--font-body); }
   .hero-actions { width: 100%; }
   .hero-actions .btn { width: 100%; justify-content: center; text-align: center; }
   .panel { padding: var(--space-md); }
+
+  .hero {
+    padding: var(--space-2xl) var(--space-md);
+  }
+
+  .card-job {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 420px) {

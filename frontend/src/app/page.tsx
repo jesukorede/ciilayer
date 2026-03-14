@@ -23,9 +23,6 @@ export default function Page() {
               CiiLayer helps you publish capabilities, match to real tasks, and track execution status with wallet-based identities on Hedera.
             </p>
             <div className="row hero-actions" style={{ marginTop: 16 }}>
-              <a className="btn" href="https://operantxlandingpg.vercel.app/" target="_blank" rel="noreferrer">
-                Request Pilot Access
-              </a>
               <a className="btn secondary" href="/jobs">
                 Browse Jobs
               </a>
