@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Navbar } from "../../components/Navbar";
+import { ActivityFeed } from "../../components/ActivityFeed";
 import { api } from "../../lib/api";
 
 export default function DashboardPage() {
@@ -80,6 +81,8 @@ export default function DashboardPage() {
                   </div>
                 ))}
               </div>
+
+              <ActivityFeed />
             </div>
           </div>
         )}

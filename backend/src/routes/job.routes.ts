@@ -4,6 +4,7 @@ import { z } from "zod";
 import type { Db } from "../config/database.js";
 import { requireAuth, type AuthedRequest } from "../middleware/auth.middleware.js";
 import { trackEvent } from "../services/analytics.service.js";
+import { logJobEvent } from "../services/hedera.service.js";
 import { acceptJob, completeJob, createJob, listJobs } from "../services/job.service.js";
 
 export function jobRoutes(db: Db) {
@@ -57,6 +58,13 @@ export function jobRoutes(db: Db) {
       }
     });
 
+    void logJobEvent({
+      type: "job_created",
+      walletAddress: req.user!.walletAddress,
+      jobId: job.id,
+      data: { title: job.title, requiredSkillsCount: job.requiredSkills.length }
+    });
+
     res.json({ job });
   });
 
@@ -78,6 +86,12 @@ export function jobRoutes(db: Db) {
           origin: req.get("origin") ?? undefined,
           referer: req.get("referer") ?? undefined
         }
+      });
+
+      void logJobEvent({
+        type: "job_accepted",
+        walletAddress: req.user!.walletAddress,
+        jobId: job.id
       });
 
       res.json({ job });
@@ -104,6 +118,12 @@ export function jobRoutes(db: Db) {
           origin: req.get("origin") ?? undefined,
           referer: req.get("referer") ?? undefined
         }
+      });
+
+      void logJobEvent({
+        type: "job_completed",
+        walletAddress: req.user!.walletAddress,
+        jobId: job.id
       });
 
       res.json({ job });

@@ -49,6 +49,7 @@ export const api = {
   me: () => req<{ user: any }>("/me"),
   updateMe: (payload: any) => req<{ user: any }>("/me", { method: "PUT", body: JSON.stringify(payload) }),
   applyPilot: () => req<{ user: any }>("/me/pilot/apply", { method: "POST" }),
+  activity: (limit = 20) => req<{ enabled: boolean; items: any[] }>(`/api/activity?limit=${limit}`),
   jobs: () => req<{ jobs: any[] }>("/jobs"),
   createJob: (payload: { title: string; description: string; requiredSkills: string[] }) =>
     req<{ job: any }>("/jobs", { method: "POST", body: JSON.stringify(payload) }),

@@ -4,6 +4,7 @@ import { z } from "zod";
 import type { Db } from "../config/database.js";
 import { requireAuth, type AuthedRequest } from "../middleware/auth.middleware.js";
 import { trackEvent } from "../services/analytics.service.js";
+import { logMachineEvent } from "../services/hedera.service.js";
 import { getUser, updateUser } from "../services/user.service.js";
 import { applyForPilot } from "../services/pilot.service.js";
 
@@ -26,6 +27,8 @@ export function userRoutes(db: Db) {
   });
 
   r.put("/me", requireAuth, async (req: AuthedRequest, res) => {
+    const before = await getUser(db, req.user!.walletAddress);
+
     const schema = z.object({
       role: z.enum(["human", "machine_owner"]).optional(),
       skills: z.array(z.string()).optional(),
@@ -59,6 +62,18 @@ export function userRoutes(db: Db) {
         referer: req.get("referer") ?? undefined
       }
     });
+
+    if (parsed.data.machines) {
+      const prevCount = (before?.machines ?? []).length;
+      const nextCount = (updated?.machines ?? []).length;
+      const eventType = nextCount > prevCount ? "machine_added" : "machines_updated";
+
+      void logMachineEvent({
+        type: eventType,
+        walletAddress: req.user!.walletAddress,
+        data: { prevCount, nextCount }
+      });
+    }
 
     res.json({ user: updated });
   });
