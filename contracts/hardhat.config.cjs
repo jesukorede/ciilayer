@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-ethers");
 require("dotenv").config();
 
-const HEDERA_RPC_URL = process.env.HEDERA_RPC_URL || process.env.RPC_URL || "";
+const HEDERA_RPC_URL = process.env.HEDERA_RPC_URL || process.env.RPC_URL || "https://testnet.hashio.io/api";
 const PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || "";
 const CHAIN_ID = Number(process.env.CHAIN_ID || 0);
 
