@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "../../components/Navbar";
 import { api } from "../../lib/api";
+import { acceptJobOnchain, confirmCompletionOnchain, recordJobOnchain } from "../../lib/registry";
 
 function splitCsv(s: string) {
   return s
@@ -39,10 +40,17 @@ export default function JobsPage() {
   async function onCreate() {
     setError(null);
     try {
-      await api.createJob({ title, description, requiredSkills: splitCsv(requiredSkills) });
+      const { job } = await api.createJob({ title, description, requiredSkills: splitCsv(requiredSkills) });
       setTitle("");
       setDescription("");
       setRequiredSkills("");
+
+      try {
+        await recordJobOnchain(job);
+      } catch {
+        // best-effort on-chain registry
+      }
+
       await refresh();
     } catch (e: any) {
       setError(e.message);
@@ -53,6 +61,13 @@ export default function JobsPage() {
     setError(null);
     try {
       await api.acceptJob(id);
+
+      try {
+        await acceptJobOnchain(id);
+      } catch {
+        // best-effort on-chain registry
+      }
+
       await refresh();
     } catch (e: any) {
       setError(e.message);
@@ -63,6 +78,13 @@ export default function JobsPage() {
     setError(null);
     try {
       await api.completeJob(id);
+
+      try {
+        await confirmCompletionOnchain(id);
+      } catch {
+        // best-effort on-chain registry
+      }
+
       await refresh();
     } catch (e: any) {
       setError(e.message);
